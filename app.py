@@ -82,8 +82,28 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip()
+        password = request.form.get('password', '')
+
+        if not email or not password:
+            flash('Please enter both email and password', 'danger')
+            return render_template('login.html')
+
+        conn = get_db_connection()
+        user = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
+        conn.close()
+
+        if user and check_password_hash(user['password'], password):
+            flash('Login successful!', 'success')
+            # In a real app, you would set a session variable here
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid email or password', 'danger')
+            return render_template('login.html')
+
     return render_template('login.html')
 
 if __name__ == '__main__':
