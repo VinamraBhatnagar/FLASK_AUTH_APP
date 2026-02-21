@@ -1,0 +1,5 @@
+{
+  "name": "flask-auth-app",
+  "description": "Flask Auth App",
+  "requestFramePermissions": []
+}

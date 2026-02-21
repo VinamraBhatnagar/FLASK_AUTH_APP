@@ -26,6 +26,9 @@ def init_db():
     conn.commit()
     conn.close()
 
+# Initialize the database when the app starts
+init_db()
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -84,6 +87,5 @@ def login():
     return render_template('login.html')
 
 if __name__ == '__main__':
-    init_db()
     port = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=port, debug=True)
